@@ -127,6 +127,28 @@ class example_simple_node_t : public wf::scene::node_t,
         return *this;
     }
 
+    // First, a node should specify where it wants to receive input.
+    // The find_node_at function takes a coordinate in the node's coordinate system (i.e with the
+    // transformation of the parent nodes applied, same as bounding box, etc.) and needs to return which
+    // node should get a focus for that region.
+    //
+    // Note that if a node with higher Z-order obstructs a part of the node, that other node will get pointer
+    // input first.
+    std::optional<wf::scene::input_node_t> find_node_at(const wf::pointf_t& at) override
+    {
+        // Simply check whether the mouse is over our bounding box.
+        wf::region_t our_region{get_bounding_box()};
+        if (our_region.contains_pointf(at))
+        {
+            wf::scene::input_node_t result;
+            result.node = this;
+            result.local_coords = at;
+            return result;
+        }
+
+        return {};
+    }
+
     void handle_pointer_enter(wf::pointf_t position) override
     {
         (void)position;
