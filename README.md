@@ -1,3 +1,5 @@
+**THIS IS STILL WIP!!!**
+
 # wayfire-plugin-template
 
 This repository contains a basic skeleton of a Wayfire plugin, together with a few examples of common operations
